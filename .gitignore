@@ -1,0 +1,6 @@
+prompts/
+.venv/
+__pycache__/
+runs/
+node_modules/
+web/pwa/dist/
