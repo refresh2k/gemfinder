@@ -9,7 +9,7 @@ Demo video (2:32, live phone flow over cellular): https://youtu.be/oZZ8nfgzwYs
 ## What it does
 
 - **Bed scan — rank only, never a species ID.** A bed photo returns ranked candidates with boxes, confidence scores, and plain-language reasons ("worth picking up"). The list shows entries at **85% confidence or above only**, in confidence order. No stone is ever named to species on the bed list.
-- **Close-up — guided, one stone.** Tap a candidate to open its close-up panel: clean-the-stone prompt, one close-up photo, tap-to-focus the stone, then a guided scratch test (fingernail → copper → glass → steel) that locks in a hardness range. The scan returns a single-stone read: description, hardness used, and up to 3 *possible — not confirmed* identities, each with supporting points, contradicting or uncertain points, and a next check. The suggestions panel is the only place species names may appear, and never as a definitive claim.
+- **Close-up — guided, one stone.** Tap a candidate to open its close-up panel: clean-the-stone prompt, one close-up photo, tap-to-focus the stone, then a guided scratch test (fingernail → coin → glass → steel) that locks in a hardness range. The scan returns a single-stone read: description, hardness used, and up to 3 *possible — not confirmed* identities, each with supporting points, contradicting or uncertain points, and a next check. The suggestions panel is the only place species names may appear, and never as a definitive claim.
 - **Splash prompt.** If a live bed scan finds nothing at 85% or above, the app suggests splashing the bed with water and reshooting — wet stones show color dry stones hide — with "Splash and reshoot" and "Dismiss" actions. The banked Demo never triggers it.
 - **Saved rocks — device only.** "Save this rock" stores the close-up photo, description, hardness, cleaned state, note, and identities in on-phone storage.
 - **Modes are Live and Demo only.** Demo serves a fixed banked report and is always labeled "banked" — it is never presented as a live scan.
@@ -56,7 +56,9 @@ A live phone flow over cellular (WiFi off): open the PWA over Tailscale, shoot t
 
 ## Measured evidence
 
-Formal scoring against the registered ground-truth manifest (`assets/testbed/ground-truth-registered.json`, ring center inside candidate box, strict): dry run 8/12, wet run 10/12 on the Oct 29 pair — wet beats dry. Live phone scans return 300 ranked candidates in ~200s.
+Formal scoring against the registered ground-truth manifest (`assets/testbed/ground-truth-registered.json`, ring center inside candidate box, strict): dry run 8/12, wet run 10/12 on the Oct 29 pair — wet beats dry. Live phone scans rank all 300 candidates in ~200s, and only the 85%+ ones are shown in the list.
+
+Note for judges: this app is Tailscale-only and needs a server-side API key, so it cannot be run from the repo alone. The demo video above is the live evidence, and Demo mode in the app is banked, not live.
 
 ## Tests
 
