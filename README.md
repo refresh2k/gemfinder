@@ -19,3 +19,10 @@ Demo video (2:32, live phone flow over cellular): https://youtu.be/oZZ8nfgzwYs
 Phone PWA → Tailscale → Node proxy → Python CLI → SAM 3.1 (segmentation) + Muse Spark (ranking/assessment), via the Meta Model API (`https://api.meta.ai/v1`).
 
 - The PWA is a static Vite/React build with no pipeline code and no API key. All inference runs through the proxy.
+- The proxy (`web/proxy/server.js`) shells out to the Python CLI. Routes: `POST /scan`, `POST /closeup`, `POST /project`, `GET /demo/photo`, `GET /demo/report`, `GET /health`.
+- The Meta API key lives server-side only. It never appears in the client, logs, or UI. `/health` reports availability without exposing the value.
+- Access is Tailscale-only; no public ports.
+
+## How to run it
+
+Prereqs: Python 3.12+ with a `.venv` (`pip install -r requirements.txt`), Node 18+, and a Meta Model API key (see below — never commit it).
