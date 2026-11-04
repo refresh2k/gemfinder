@@ -2,7 +2,7 @@
 
 Point a phone at a gravel bed and get back the stones worth picking up — ranked, highest confidence first.
 
-Built Oct 27 – Nov 1, 2026, for the Meta AI Hackathon, using the Meta Model API: SAM 3.1 for segmentation of stones in a gravel-bed photo, and Muse Spark for multimodal anomaly ranking and close-up assessment. The result is a phone PWA that scans a gravel bed, ranks the candidates worth picking up, and guides a close-up check on any stone you tap — with a Node proxy and Python CLI behind it, over Tailscale.
+Full project built Oct 27 – Nov 4, 2026, for the Meta AI Hackathon, using the Meta Model API: SAM 3.1 for segmentation of stones in a gravel-bed photo, and Muse Spark for multimodal anomaly ranking and close-up assessment. The result is a phone PWA that scans a gravel bed, ranks the candidates worth picking up, and guides a close-up check on any stone you tap — with a Node proxy and Python CLI behind it, over Tailscale.
 
 Demo video (2:32, live phone flow over cellular): https://youtu.be/oZZ8nfgzwYs
 
@@ -26,6 +26,10 @@ Phone PWA → Tailscale → Node proxy → Python CLI → SAM 3.1 (segmentation)
 ## How to run it
 
 Prereqs: Python 3.12+ with a `.venv` (`pip install -r requirements.txt`), Node 18+, the API key in `~/.model_api_key`.
+
+# Key (never commit it): either
+export MODEL_API_KEY="your-meta-model-api-key"
+# or put the key, mode 0600, in ~/.model_api_key
 
 ```
 # 1. Start the proxy (default port 8741)
