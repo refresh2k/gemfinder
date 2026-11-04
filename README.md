@@ -81,3 +81,7 @@ All suites green as of Nov 1. Browser verification is done in headless Chromium 
 - `web/pwa/` — static PWA (`src/`, tests beside it, `dist/` build output, `public/sw.js` service worker).
 - `assets/testbed/` — before/dry/splash/answer-key photos, registered ground truth, ring labels.
 - `tests/` — CLI unit tests (stdlib only).
+
+# Key (never commit it): either
+export MODEL_API_KEY="your-meta-model-api-key"
+# or put the key, mode 0600, in ~/.model_api_key
