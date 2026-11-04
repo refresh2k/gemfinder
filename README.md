@@ -26,3 +26,60 @@ Phone PWA → Tailscale → Node proxy → Python CLI → SAM 3.1 (segmentation)
 ## How to run it
 
 Prereqs: Python 3.12+ with a `.venv` (`pip install -r requirements.txt`), Node 18+, and a Meta Model API key (see below — never commit it).
+
+```
+# Key (never commit it): either
+export MODEL_API_KEY="your-meta-model-api-key"
+# or put the key, mode 0600, in ~/.model_api_key
+```
+
+```
+# 1. Start the proxy (default port 8741)
+./web/proxy/start.sh
+
+# 2. Check it (key present, banked demo available)
+curl localhost:8741/health
+
+# 3. Serve the PWA: the proxy serves web/pwa/dist automatically.
+#    Rebuild after PWA changes:
+cd web/pwa && npm run build
+
+# 4. On the phone (Tailscale on): open http://<build-box>:8741
+```
+
+CLI directly (same pipeline the proxy shells out to):
+
+```
+.venv/bin/python cli.py assets/testbed/dry.jpg --dry-run   # tiling + local stats, no API calls
+.venv/bin/python cli.py assets/testbed/dry.jpg --project   # spend projection, exits before any API call
+.venv/bin/python cli.py assets/testbed/dry.jpg             # live bed scan
+.venv/bin/python cli.py --pair assets/testbed/dry.jpg assets/testbed/splash.jpg  # dry + wet comparison
+```
+
+## What the demo video shows
+
+A live phone flow over cellular (WiFi off): open the PWA over Tailscale, shoot the gravel bed, confirm the live scan, get back the ranked 85%+ list, tap a candidate to zoom, run the guided close-up (clean → photo → focus → scratch test → single-stone read with possible identities), and save the rock on-device. No banked content appears except where the video says so.
+
+## Measured evidence
+
+Formal scoring against the registered ground-truth manifest (`assets/testbed/ground-truth-registered.json`, ring center inside candidate box, strict): dry run 8/12, wet run 10/12 on the Oct 29 pair — wet beats dry. Live phone scans rank all 300 candidates in ~200s, and only the 85%+ ones are shown in the list.
+
+Note for judges: this app is Tailscale-only and needs a server-side API key, so it cannot be run from the repo alone. The demo video above is the live evidence, and Demo mode in the app is banked, not live.
+
+## Tests
+
+```
+.venv/bin/python -m unittest discover -s tests -t .  # CLI: 61 tests
+node --test web/pwa/*.test.js                        # PWA pure modules: 48 tests
+node --test web/proxy/*.test.js                      # proxy: 17 tests
+```
+
+All suites green as of Nov 1. Browser verification is done in headless Chromium at a phone viewport against the live proxy with Demo/banked data or intercepted responses.
+
+## Layout
+
+- `cli.py` — the pipeline (tiling, SAM segmentation, flagging, stitching, Spark ranking, close-up assessment). The proxy shells out to it; nothing reimplements it.
+- `web/proxy/` — Node/Express proxy: `/scan`, `/closeup`, `/project`, demo + health routes, key loading, `start.sh` restart script.
+- `web/pwa/` — static PWA (`src/`, tests beside it, `dist/` build output, `public/sw.js` service worker).
+- `assets/testbed/` — before/dry/splash/answer-key photos, registered ground truth, ring labels.
+- `tests/` — CLI unit tests (stdlib only).
